@@ -7,7 +7,7 @@ on:
   push:
     branches: [ "main" ]
     paths-ignore:
-      - 'gh-pages/**'
+      - 'docs/**'
   
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -34,7 +34,8 @@ jobs:
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git commit -a -m "Add changes"
+        git add docs
+        git commit -a -m "Publish pages"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
