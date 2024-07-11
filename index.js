@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import Person from "./Person.js";
 import * as db from "./db.js";
 import morgan from "morgan"
+import { person } from "./PersonData";
 // import { createWriteStream } from "fs";
 
 const theme = "six";
@@ -31,29 +32,6 @@ app.get("/img/profile.jpeg", (req, res) => {
   got.stream(`https://demo.datengdong.com/img/profile.jpeg`).pipe(res);
 });
 app.use(express.static("public"));
-const Abuya = new Person("", "KH. Mahfudz Syaubari, MA");
-const person = [
-  {
-    man: new Person("Najah", "Muhammad Najah Mahfudz", {
-      father: Abuya,
-      mother: new Person("", "Nyai Hj. Shofiyah"),
-    }),
-    woman: new Person("Nadya", "Nadya Ummu Kultsum", {
-      father: new Person("", "Drs. KH Muhammad Makmun"),
-      mother: new Person("", "Nyai Hj. Qais Muhayyam"),
-    }),
-  },
-  {
-    man: new Person("Zain", "Zain Mahfudz", {
-      father: Abuya,
-      mother: new Person("", "Nyai Hj. Endang Nur Rohmawati"),
-    }),
-    woman: new Person("Nafisa", "Nafisa Alyana", {
-      father: new Person("", "Prof. Dr. H. M. Nizarul Alim"),
-      mother: new Person("", "Nyai Hj. Nina Hendriana"),
-    }),
-  },
-];
 app.get("/", (req, res) => {
   res.render("index", {
     date: "Ahad, 18 Agustus 2024",
