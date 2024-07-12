@@ -1,6 +1,5 @@
 <?php
-// https://mediaofficialrijan.github.io/Undangan/
-
+$SOURCE = "https://rijan-creative-media.github.io/Undangan/"
 $request = $_SERVER['REQUEST_URI'];
 $viewDir = '/views/';
 
@@ -21,7 +20,7 @@ switch ($request) {
         break;
     case '/':
     default:
-        $res = get_content("https://mediaofficialrijan.github.io/Undangan" . $request);
+        $res = get_content($SOURCE . $request);
         if ($res["status"] == 200) {
             if (!empty($res["type"])) {
                 header("Content-Type: ".$res["type"]);
