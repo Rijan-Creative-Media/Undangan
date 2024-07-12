@@ -3,5 +3,5 @@ CREATE TABLE `guestbook` (
 	`name` text NOT NULL,
 	`attendance` text NOT NULL,
 	`text` text NOT NULL,
-	`date` date DEFAULT utc_timestamp()
+	`date` datetime DEFAULT utc_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

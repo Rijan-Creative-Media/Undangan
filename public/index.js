@@ -46,7 +46,7 @@ window.addEventListener("load", function () {
 		const bufferLength = analyser.frequencyBinCount;
 		const dataArray = new Uint8Array(bufferLength);
 		let MaxPeak = new Array(bufferLength).fill().map(() => new Peak(0, 0.09))
-		if (true) {
+		if (document.body.classList.contains('dev')) {
 			const WIN = window.open('', '_blank', "width=200,height=100")
 			let VISUALIZER = true
 			window.onbeforeunload = function () {

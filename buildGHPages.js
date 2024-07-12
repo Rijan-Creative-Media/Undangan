@@ -5,22 +5,26 @@ import {
     readdirSync,
     readFileSync,
     writeFileSync,
+    createWriteStream,
     existsSync,
     mkdirSync,
-    cpSync,
     lstatSync,
+    cpSync,
     rmSync,
-    createWriteStream,
-    read,
+    renameSync,
 } from "fs";
 import Person from "./Person.js";
 import { person } from "./PersonData.js";
 import { dirname } from "path";
 
+function createFolderIfNotExist(folder) {
+    const destFolder = dirname(folder);
+    if (!existsSync(destFolder)) mkdirSync(destFolder, { recursive: true });
+}
+
 async function write(filename, data, encoding = "utf8") {
     const dest = path.join(buildFolder, filename)
-    const destFolder = dirname(dest);
-    if (!existsSync(destFolder)) mkdirSync(destFolder, { recursive: true });
+    createFolderIfNotExist(dest)
     if (/^https?:\/\//i.test(data)) {
         console.log(`Downloading '${data}' to '${filename}'`)
         await got.stream(data).pipe(createWriteStream(dest));
@@ -33,10 +37,15 @@ async function write(filename, data, encoding = "utf8") {
 function cp(src, dest) {
     dest = path.join(buildFolder, dest);
     const isDir = lstatSync(src).isDirectory();
-    const destFolder = dirname(dest);
-    if (!existsSync(destFolder)) mkdirSync(destFolder, { recursive: true });
+    createFolderIfNotExist(dest)
     console.log(isDir ? `Copying '${src}' content inside '${dest}'` : `Copying '${src}' to '${dest}'`)
     cpSync(src, dest, { recursive: isDir });
+}
+
+function mv(src, dest) {
+    createFolderIfNotExist(dest)
+    console.log(`Moving '${src}' to '${dest}'`)
+    renameSync(src, dest);
 }
 
 function cleanFolder(folder) {
@@ -58,7 +67,6 @@ const html = ejs.render(readFileSync("./views/index.ejs", "utf8"), data);
 cleanFolder(buildFolder)
 write("index.html", html);
 write("/img/profile.jpeg", "https://demo.datengdong.com/img/profile.jpeg")
-write("/themes/six/images/mahkota.png", readFileSync('./public/images/blue/mahkota.png'))
 for (let dir of readdirSync("./public")) {
     console.log(dir);
     switch (dir) {
@@ -69,3 +77,4 @@ for (let dir of readdirSync("./public")) {
             cp(path.join("./public", dir), dir);
     }
 }
+mv(path.join(buildFolder, "/images/mahkota.png"), path.join(buildFolder, "/themes/six/images/mahkota.png"))
