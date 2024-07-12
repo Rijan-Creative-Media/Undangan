@@ -57,6 +57,7 @@ const html = ejs.render(readFileSync("./views/index.ejs", "utf8"), data);
 cleanFolder(buildFolder)
 write("index.html", html);
 write("/img/profile.jpeg", "https://demo.datengdong.com/img/profile.jpeg")
+write("/themes/six/images/mahkota.png", "https://demo.datengdong.com/themes/six/images/mahkota.png")
 for (let dir of readdirSync("./public")) {
     console.log(dir);
     switch (dir) {
