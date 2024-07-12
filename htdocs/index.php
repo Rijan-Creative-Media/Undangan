@@ -1,5 +1,5 @@
 <?php
-$SOURCE = "https://rijan-creative-media.github.io/Undangan/"
+$SOURCE = "https://rijan-creative-media.github.io/Undangan/";
 $request = $_SERVER['REQUEST_URI'];
 $viewDir = '/views/';
 
