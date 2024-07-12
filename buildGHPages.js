@@ -1,4 +1,5 @@
 import ejs from "ejs";
+import got from "got";
 import path from "path";
 import {
     readdirSync,
@@ -9,15 +10,23 @@ import {
     cpSync,
     lstatSync,
     rmSync,
-    unlinkSync,
+    createWriteStream,
 } from "fs";
 import Person from "./Person.js";
 import { person } from "./PersonData.js";
 import { dirname } from "path";
 
-function write(filename, data, encoding = "utf8") {
-    console.log(`Writing to '${filename}'`)
-    return writeFileSync(path.join(buildFolder, filename), data, encoding);
+async function write(filename, data, encoding = "utf8") {
+    const dest = path.join(buildFolder, filename)
+    const destFolder = dirname(dest);
+    if (!existsSync(destFolder)) mkdirSync(destFolder, { recursive: true });
+    if (/^https?:\/\//i.test(data)) {
+        console.log(`Downloading '${data}' to '${filename}'`)
+        await got.stream(data).pipe(createWriteStream(dest));
+    } else {
+        console.log(`Writing to '${filename}'`)
+        return writeFileSync(dest, data, encoding);
+    }
 }
 
 function cp(src, dest) {
@@ -47,6 +56,7 @@ const html = ejs.render(readFileSync("./views/index.ejs", "utf8"), data);
 
 cleanFolder(buildFolder)
 write("index.html", html);
+write("/img/profile.jpeg", "https://demo.datengdong.com/img/profile.jpeg")
 for (let dir of readdirSync("./public")) {
     console.log(dir);
     switch (dir) {
